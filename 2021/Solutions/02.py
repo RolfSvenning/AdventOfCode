@@ -1,0 +1,1 @@
+# [int(line.rstrip('\n')) for line in open("input/01_input.txt")]
