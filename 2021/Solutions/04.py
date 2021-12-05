@@ -34,7 +34,7 @@ class bingoBoard:
     
     def insertNumber(self, n):
         if n in self.board:
-            self.board[self.board == n] = -1
+            self.board[np.where(self.board == n)] = -1
         if -5 in self.board.sum(axis=0) or -5 in self.board.sum(axis=1):
             self.board[self.board == -1] = 0
             self.hasBingo = True
@@ -44,7 +44,6 @@ class bingoBoard:
 
 
 if __name__ == "__main__":
-    print("PART ONE AND TWO ------------------------------------------")
     firstBoardRes, lastBoardRes = part_one_and_two()
     print("Sum of FIRST winning bingo board times 'n' is: ", firstBoardRes)
     print("Sum of LAST winning bingo board times 'n' is: ", lastBoardRes)
