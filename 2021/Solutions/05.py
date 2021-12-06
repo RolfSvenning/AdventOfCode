@@ -2,7 +2,7 @@ import numpy as np
 
 
 def part_one_and_two():
-    input2 = [[int(s) for s in line.rstrip("\n").replace(" -> ", ",").split(",")] for line in open("2021/input/05.txt") if line != "\n"]
+    input2 = [[int(s) for s in line.rstrip("\n").replace(" -> ", ",").split(",")] for line in open("2021/input/05.txt")]
     
     # PART ONE -------------------------------------------------------
     input1 = [l for l in input2 if l[0] == l[2] or l[1] == l[3]] # only keep horisontal or vertical lines for this part
@@ -12,14 +12,13 @@ def part_one_and_two():
     V = np.zeros((rows, columns)) # V is matrix of locations of vents
     
     for (x1, y1, x2, y2) in input1:
-        if x1 == x2 and y1 != y2:
+        if x1 == x2 and y1 != y2: # horisontal
             for y in range(min(y1, y2), max(y1, y2) + 1):
                 V[x1, y] += 1
 
-        if x1 != x2 and y1 == y2:
+        if x1 != x2 and y1 == y2: # vertical
             for x in range(min(x1, x2), max(x1, x2) + 1):
                 V[x, y1] += 1
-
     print("PART ONE: ", np.sum(V >= 2))
 
     # PART TWO -------------------------------------------------------
@@ -47,8 +46,12 @@ def part_one_and_two():
             xs, ys = myToList(x1, x2), myToList(y1, y2)
             for x,y in zip(xs, ys):
                 V[x,y] += 1
-
     print("PART TWO: ", np.sum(V >= 2))
 
 if __name__ == "__main__":
     part_one_and_two()
+
+# FOR PLOTTING INSERT THIS
+# from matplotlib import pyplot as plt
+# plt.imshow(V, interpolation='nearest')
+# plt.show()
