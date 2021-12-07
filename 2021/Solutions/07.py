@@ -10,8 +10,8 @@ def part_one_and_two():
     def dist(a, b):
         return int(((a - b)**2 + (abs(a - b))) / 2)
     meanPos = np.mean(positions)
-    # take derivative of cost function d/dc 0.5 * sum_i (x_i - c)^2 |x_i - c| and observe it takes values in xbar +-1
-    cs = [int(c) for c in [np.floor(meanPos - 1), np.ceil(meanPos - 1), np.floor(meanPos + 1), np.ceil(meanPos + 1)]]
+    # take derivative of cost function d/dc 0.5 * sum_i (x_i - c)^2 |x_i - c| and observe it takes values in xbar +- 0.5
+    cs = [int(c) for c in [np.floor(meanPos - 0.5), np.ceil(meanPos - 0.5), np.floor(meanPos + 0.5), np.ceil(meanPos + 0.5)]]
     totalDistance2 = min([sum([dist(p, c) for p in positions]) for c in cs])
     print("Part two total fuel: ", totalDistance2)
 
