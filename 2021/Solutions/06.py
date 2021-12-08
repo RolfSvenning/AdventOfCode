@@ -3,7 +3,6 @@ import numpy as np
 
 def part_one():
     fish = np.array([int(s) for s in next(open("2021/input/06.txt")).rstrip("\n").split(",")])
-    print(fish)
     for _ in range(80):
         newFish = np.sum(fish == 0)
         fish[fish == 0] = 7
