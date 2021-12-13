@@ -2,7 +2,7 @@ from collections import defaultdict
 
 
 def part_one_and_two():
-    edgeList = [[(x) for x in line.strip().split("-")] for line in open("2021/input/12.txt")]
+    edgeList = [[x for x in line.strip().split("-")] for line in open("2021/input/12.txt")]
     V = set() #visitedSet
     A = defaultdict(list) #adjacencyRepresentation
     for u,v in edgeList:
