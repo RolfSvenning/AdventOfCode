@@ -14,11 +14,10 @@ def part_one_and_two():
     for i, (axis,c) in enumerate(folds):
         if axis == "x":
             paper = paper.T
-        coords = np.where(paper == 1)
-        dotsToMove = [(x,y) for x,y in zip(coords[0], coords[1]) if y > c]
+        dotsToMove = [(x,y) for x,y in zip(np.where(paper == 1)[0], np.where(paper == 1)[1]) if y > c]
         for x, y in dotsToMove:
             _, d = np.shape(paper)
-            paper[x, 0 + (d - 1 - y)] = 1
+            paper[x, d - 1 - y] = 1
         paper = paper[:, :c]
         if axis == "x":
             paper = paper.T
@@ -30,9 +29,5 @@ def part_one_and_two():
     plt.show()
 
 
-def test():
-    pass
-
 if __name__ == '__main__':
     part_one_and_two()
-    test()
