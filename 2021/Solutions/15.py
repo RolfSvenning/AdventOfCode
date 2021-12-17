@@ -1,10 +1,8 @@
 import numpy as np
 from heapq import heappop, heappush
-import time
 
 
 def part_one_and_two():
-    t = time.process_time()
     lines = [[int(n) for n in line] for line in open("2021/input/15.txt").read().split("\n")]
     M = np.array(lines, dtype=int)
     # FOR PART TWO -----------------------------------------------------------------------------------------------------
@@ -46,9 +44,6 @@ def part_one_and_two():
 
     print("Part one, shortest path: ", dist[int(n / 5) - 1, int(d / 5) - 1])
     print("Part two (25 times larger board) shortest path: ", dist[-1,-1])
-    elapsed_time = time.process_time() - t
-    print(elapsed_time)
-
 
 if __name__ == '__main__':
     part_one_and_two() 
