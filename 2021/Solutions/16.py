@@ -28,7 +28,6 @@ def versionToFun(s, ls): # FOR PART TWO
         case "ID5": res = int(ls[1] > ls[0])
         case "ID6": res = int(ls[1] < ls[0])
         case "ID7": res = int(ls[1] == ls[0])
-        case _: print("s_______________", s, type(s))
     return res
 
 def part_one_and_two():
