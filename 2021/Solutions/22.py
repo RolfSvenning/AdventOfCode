@@ -16,7 +16,7 @@ def part_one():
     
 
 def part_two():
-    coords = [[int(s) for s in re.findall("[-]*\d+", l)] for i, l in enumerate(open("2021/input/21.txt").read().split("\n"))]
+    coords = [[int(s) for s in re.findall("[-]*\d+", l)] for l in open("2021/input/21.txt").read().split("\n")]
     on_or_off = [1 if re.match("[a-z]+", l)[0] == "on" else 0 for l in open("2021/input/21.txt").read().split("\n")]
     
     XYZs_ = [[coords[i][j:j+2] for i in range(len(coords))] for j in [0,2,4]]
