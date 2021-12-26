@@ -37,10 +37,6 @@ def part_two():
         z2 = min(Az2, Bz2)
         return (x1, x2, y1, y2, z1, z2), -Bs
 
-    #  1  1  -1
-    #  1 -1   1
-    # -1  1  -1
-    # -1 -1   1
     def volume(cube):
         x1, x2, y1, y2, z1, z2 = cube
         return (x2-x1+1) * (y2-y1+1) * (z2-z1+1)
@@ -52,36 +48,14 @@ def part_two():
         for cubeB in currentCubes:
             if not intersects(cubeA, cubeB):
                 continue
-            # print("here")
             newCubes.append(createOverlappingCube(cubeA,cubeB)) 
         if cubeA[-1] == 1:
             currentCubes += [cubeA]
         currentCubes += newCubes
-        # print(currentCubes)
-        # sum = np.sum([s * volume(coords) for coords,s in currentCubes])
-        # print("Total sum: ", sum)
 
-
-    
-    print("Len total cubes: ", len(currentCubes), )
+    print("Len total cubes: ", len(currentCubes))
     sum = np.sum([s * volume(coords) for coords,s in currentCubes])
-    print("Total sum: ", sum)
-
-
-    
-
-
-    # insert cubes one at a time.
-    # for c in cubes:
-    #   for c' in cubes:
-    #       if c interset c':
-    #           handle cube for overlap by adding new overlap cube
-    #           add entire cube
-
-    # XYZs_ = [[cubes[i][j:j+2] for i in range(len(cubes))] for j in [0,2,4]]
-    # Xs, Ys, Zs = [sorted([v for pairs in coord for v in pairs]) for coord in XYZs_]
-
-
+    print("Part two, total area that is turned on: ", sum)
 
 
 if __name__ == '__main__':
