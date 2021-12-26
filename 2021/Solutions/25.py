@@ -2,23 +2,15 @@ import numpy as np
 
 def part_one_and_two():
     input = open("2021/input/25.txt").read().replace(".","0").replace(">","1").replace("v","2").split("\n")
-    
     seaFloor = np.array([[int(s) for s in row] for row in input])
     n,d = np.shape(seaFloor)
-
-    
     r = 0
     changeDetected = True
     while changeDetected:
         changeDetected = False
         r = r + 1
-        if r % 10 == 0:
-            print(r)
-            print(r, "\n", seaFloor)
-        if r > 1000:
-            break
-        
         seaFloorNext = np.zeros_like(seaFloor)
+        # MAKE ALL POSSIBLE MOVES TO THE RIGHT
         for i,j in [(i,j) for i in range(n) for j in range(d)]:
             match seaFloor[i,j]:
                 case 1: # >
@@ -30,6 +22,7 @@ def part_one_and_two():
                         seaFloorNext[i,j] = 1
                 case _: continue
 
+        # MAKE ALL POSSIBLE MOVES DOWNWARDS
         for i,j in [(i,j) for i in range(n) for j in range(d)]:
             match seaFloor[i,j]:
                 case 2: # v
@@ -39,20 +32,11 @@ def part_one_and_two():
                         seaFloorNext[nextPos] = 2
                     else:
                         seaFloorNext[i,j] = 2
-                case _: continue
-
-                
+                case _: continue 
         seaFloor = seaFloorNext.copy()
     
-    print("round reached: ", r)
-    print("Final position: ", seaFloor)
-        
-
+    print("Part one, first round with no movement is: ", r)
 
 
 if __name__ == '__main__':
     part_one_and_two()
-
-
-    
-
