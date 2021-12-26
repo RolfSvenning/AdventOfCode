@@ -11,7 +11,6 @@ def part_one():
             continue
         x1, x2, y1, y2, z1, z2 = cs
         reactor[x1:x2+1,y1:y2+1,z1:z2+1] = switch
-    
     print("Part one, number of cubes on in small region: ", np.sum(reactor))
     
 
@@ -43,7 +42,6 @@ def part_two():
 
     currentCubes = []
     for cubeA in cubes:
-        print(len(currentCubes))
         newCubes = []
         for cubeB in currentCubes:
             if not intersects(cubeA, cubeB):
@@ -53,11 +51,10 @@ def part_two():
             currentCubes += [cubeA]
         currentCubes += newCubes
 
-    print("Len total cubes: ", len(currentCubes))
     sum = np.sum([s * volume(coords) for coords,s in currentCubes])
     print("Part two, total area that is turned on: ", sum)
 
 
 if __name__ == '__main__':
-    # part_one()
+    part_one()
     part_two()

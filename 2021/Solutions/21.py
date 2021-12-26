@@ -12,10 +12,9 @@ def part_one():
         scores[i % 2] += positions[i % 2]
         die = (die + 3) % sides
         if (scores >= goal).any():
-            print("Part one, nrOfRolls*losersScore: ", (i+1)*3 * np.min(scores))
+            print("Part one, number of rolls time losers score: ", (i+1)*3 * np.min(scores))
             break
 
-    
 def part_two():
     p1,p2 = [int(l[-1]) for l in open("2021/input/21.txt").read().split("\n")]
     trackSize, goal  = 10, 21
@@ -41,7 +40,7 @@ def part_two():
         return wins
         
     wins = winsFromPosition(tuple([p1, p2, 0, 0, 0]))
-    print("Part two, max wins: ", max(wins))
+    print("Part two, number of unierses where the most winning player: ", max(wins))
 
 if __name__ == '__main__':
     part_one()
