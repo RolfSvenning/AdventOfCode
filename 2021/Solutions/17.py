@@ -4,6 +4,7 @@ from numpy import ceil, sqrt, NINF, zeros, shape
 
 def part_one_and_two():
     i = re.split("[ ,.=]+", open("2021/input/17.txt").readline().strip())
+    print(i)
     Tx1, Tx2, Ty1, Ty2 = [int(s) for s in [i[3], i[4], i[6], i[7]]]
 
     assert 0 < Tx1 and Ty1 < 0 # TARGET IS STRICTLY TO THE RIGHT AND DOWN

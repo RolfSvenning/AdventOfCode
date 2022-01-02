@@ -74,7 +74,6 @@ def part_two():
     print("Part two, count of all digits: ", np.sum([decode(a, b) for a,b in zip(uniqueSignals, outputValues)]))
 
 
-
 if __name__ == '__main__':
     part_one()
     part_two()
