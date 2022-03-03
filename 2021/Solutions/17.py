@@ -34,7 +34,7 @@ def part_one_and_two():
     print("Part one, max height reached is: ", yMax)
     print("Part two, number of good initial velocities: ", nrGoodInitVels)
     print("Best initial velocity:", bestVX, bestVY)
-    shootAndPlot(bestVX, bestVY, Tx1, Tx2, Ty1, Ty2)
+    # shootAndPlot(bestVX, bestVY, Tx1, Tx2, Ty1, Ty2)
 
 
 # PLOTTING FUNCTION -----------------------------------------------------------------------------------------
