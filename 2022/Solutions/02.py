@@ -1,4 +1,4 @@
-rounds = open("2022/input/02.txt").read().split("\n")
+rounds = open("2022/input/02.txt").read().strip().split("\n")
 
 ### <---------------- PART ONE ----------------> ###
 D1 = {
