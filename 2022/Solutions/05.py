@@ -22,8 +22,8 @@ for l in open("2022/Input/05.txt").readlines():
     for _ in range(c):
         stacks[t - 1].append(stacks[f - 1].pop()) # stack numbers off by 1 in input
     # PART TWO
-    stacks2[t - 1] += (stacks2[f - 1][-c::])
-    stacks2[f - 1]  = stacks2[f - 1][:-c:]
+    stacks2[t - 1] +=  stacks2[f - 1][-c::]
+    stacks2[f - 1]  =  stacks2[f - 1][:-c:]
 
-print("Part one: ", "".join([s[-1] for s in stacks]))
+print("Part one: ", "".join([s.pop() for s in stacks]))
 print("Part two: ", "".join([s.pop() for s in stacks2]))
