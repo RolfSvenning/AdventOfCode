@@ -2,60 +2,58 @@ import re
 
 cs = [c.strip() for c in open("2022/Input/07.txt").read().strip().split("$") if c != '']
 
-print(cs[0:3])
-
+### <---------------- PART ONE ----------------> ###
 class Dir:
-    def __init__(self, parent):
+    def __init__(self, name, parent):
+        self.name = name
         self.parent = parent
         self.files = []
-        self.subdirectories = {}
-        self.checked = False
+        self.subDirs = {}
         self.size = 0
-main=Dir(parent=None) 
 
-currentDirectory = main
+    def __str__(self):
+        return f"({self.name},{self.size})"
+
+main=Dir(name = "/", parent=None) 
+
+currDir = main
 for command in cs:
     match re.split(" |\n", command, 1):
-        case "cd",  "..": 
-            currentDirectory = currentDirectory.parent # print("cd ..")
-        case "cd", "/"  : 
-            currentDirectory = main 
-            print("cd /")
-        case "cd",  dir_name: 
-            print("name: ", dir_name)
-            if dir_name in currentDirectory.subdirectories:
-                currentDirectory = currentDirectory.subdirectories[dir_name]
-            else: raise NotImplementedError #subdirectory doesn't exist, should never happen
+        case "cd",  "..":       currDir = currDir.parent
+        case "cd", "/"  :       currDir = main
+        case "cd",  name:   currDir = currDir.subDirs[name]
         case "ls", contents: 
-            print("ls")
-            if len(currentDirectory.files) + len(currentDirectory.subdirectories) == 0:
-                for c in contents.split("\n"):
-                    match c.split(" "):
-                        case "dir", dir_name: 
-                            currentDirectory.subdirectories[dir_name] =  Dir(parent=currentDirectory) 
-                            print("dir", dir_name)
-                        case size, file_name: 
-                            currentDirectory.files.append((int(size), file_name)) #converts size from string to int
-                            print(size, file_name)
-                        case _: raise NotImplementedError #should never happen
-            else: pass #already used 'ls' here before
-        case other: raise NotImplementedError #should never happen
+            assert len(currDir.files) + len(currDir.subDirs) == 0 # 'ls' used once pr. directory
+            for c in contents.split("\n"):
+                match c.split(" "):
+                    case "dir", name: 
+                        currDir.subDirs[name] =  Dir(name=name, parent=currDir) 
+                    case size, file_name: 
+                        currDir.files += [(int(size), file_name)] #converts size from string to int
 
-total = 0
+def calcSizeOfDirs(dir: Dir):
+    dir.size = sum([s for s,_ in dir.files] + [calcSizeOfDirs(d) for d in dir.subDirs.values()])
+    return dir.size
 
-def sizeOfDir(dir):
-    total += 1
-    if not dir.checked:
-        dir.size = sum([s for s,_ in dir.files] + [sizeOfDir(d) for d in dir.subdirectories.values()])
-        dir.checked = True
-        return dir.size
-    else: return dir.size
+maxSize = 100000
 
-def sumOfSmallDirectories(dir: Dir, maxSize):
-    dirSize = sizeOfDir(dir)
-    return dirSize * (dirSize <= maxSize) + sum([sumOfSmallDirectories(d, maxSize) for d in dir.subdirectories.values()])
+def sumOfSmallDirs(dir: Dir):
+    return dir.size * (dir.size <= maxSize) + sum([sumOfSmallDirs(d) for d in dir.subDirs.values()])
+
+calcSizeOfDirs(main)
+print("---PART ONE---:", sumOfSmallDirs(main))
 
 
-print("res: ", sumOfSmallDirectories(main, 100000))
+### <---------------- PART TWO ----------------> ###
+diskSpace, ususedSpaceRequired = 70000000, 30000000
 
-#print(sizeOfDir(main.subdirectories["d"]))
+def largeEnough(dir): 
+    return (diskSpace - main.size + dir.size) >= ususedSpaceRequired
+
+def smallestDir(dir: Dir):
+    subDirs = [smallestDir(d) for d in dir.subDirs.values()] + [main] #[main] added so nonempty list for 'min'
+    return min(subDirs + ([dir] if largeEnough(dir) else []), key = lambda d: d.size) 
+
+d = smallestDir(main)
+print("---PART TWO---:", d.size)
+print(f"deleting directory {d} yields unused space: {diskSpace - main.size + d.size}")
