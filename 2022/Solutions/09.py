@@ -27,11 +27,9 @@ def moveTail(hx, hy, tx, ty):
     if tx > hx and ty > hy: return tx - 1, ty - 1 #bottom right 
 
 def partOneAndTwo():
-    b1 = np.empty(totalMoves**2).reshape((totalMoves,totalMoves))
-    b2 = np.empty(totalMoves**2).reshape((totalMoves,totalMoves))
+    b1 = {(0,0)}
+    b2 = {(0,0)}
     knots = [(0,0)] * numberOfKnots
-    b1[knots[ 1]] = -1
-    b2[knots[-1]] = -2
     for t,c in moves:
         for _ in range(c):
             knots[0] = moveHead(t, *knots[0])
@@ -39,9 +37,9 @@ def partOneAndTwo():
                 if notAdj(*knots[i], *knots[i-1]):
                     knots[i] = moveTail(*knots[i-1], *knots[i])
                 else: break # no later knots will move if this one doesn't
-            b1[knots[ 1]] = -1
-            b2[knots[-1]] = -2
+            b1.add(knots[ 1])
+            b2.add(knots[-1])
     return b1, b2            
 
 b1, b2 = partOneAndTwo()
-print("PART ONE:", np.sum(b1 == -1), "\nPART TWO:", np.sum(b2 == -2))
+print("PART ONE:", len(b1), "\nPART TWO:", len(b2))
