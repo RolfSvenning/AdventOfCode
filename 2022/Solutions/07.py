@@ -5,11 +5,11 @@ cs = [c.strip() for c in open("2022/Input/07.txt").read().strip().split("$") if 
 ### <---------------- PART ONE ----------------> ###
 class Dir:
     def __init__(self, name, parent):
-        self.name = name
         self.parent = parent
-        self.files = []
         self.subDirs = {}
+        self.files = []
         self.size = 0
+        self.name = name
 
     def __str__(self):
         return f"({self.name},{self.size})"
