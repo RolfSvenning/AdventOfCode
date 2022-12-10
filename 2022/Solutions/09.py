@@ -4,6 +4,7 @@ moves = [(t, int(c)) for t,c in [m.split(" ") for m in open("2022/Input/09.txt")
 totalMoves = sum([c for _,c in moves])
 numberOfKnots = 10
 
+### <---------------- PART ONE AND TWO ----------------> ###
 def notAdj(hx, hy, tx, ty):
     return abs(hx - tx) > 1 or abs(hy - ty) > 1
 
