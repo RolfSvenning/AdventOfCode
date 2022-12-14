@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def buildA(xs, ys, rock_paths):
     xmin, xmax = min(xs), max(xs)
     xrange = xmax - xmin
