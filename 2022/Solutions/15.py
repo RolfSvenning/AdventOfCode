@@ -42,40 +42,31 @@ for bx, by in set([(bx, by) for _, _, bx, by in input]):
     B[by] += 1
 
 
-def calcRow(i, rowEventPoints):
-    if len(rowEventPoints) == 0: return 0
-    rowEventPoints = sorted(rowEventPoints, key=cmp_to_key(lambda e1, e2: orderOfEventPoints(e1, e2)))
-    covered = 1
-    numberOfOpenIntervals = 0
-    _, last = rowEventPoints[0]
-    for t,x in rowEventPoints:
-        if numberOfOpenIntervals > 0:
-                    covered += x - last
-        if numberOfOpenIntervals == 0 and x != last and t == "s": 
-            covered += 1
-        last = x
-        # print(covered, x)
-        match t: 
-            case "s": numberOfOpenIntervals += 1
-            case "e": numberOfOpenIntervals -= 1
-            case   _: raise NotImplementedError("should ever happen")
-    return covered - B[i] # subtract beacons
-
-r1 = 10
-# r1 = 2000000
-print("PART ONE:", calcRow(r1, l[r1]))
+# def calcRow(i, rowEventPoints):
+#     if len(rowEventPoints) == 0: return 0
+#     rowEventPoints = sorted(rowEventPoints, key=cmp_to_key(lambda e1, e2: orderOfEventPoints(e1, e2)))
+#     covered = 1
+#     numberOfOpenIntervals = 0
+#     _, last = rowEventPoints[0]
+#     for t,x in rowEventPoints:
+#         if numberOfOpenIntervals > 0:
+#                     covered += x - last
+#         if numberOfOpenIntervals == 0 and x != last and t == "s": 
+#             covered += 1
+#         last = x
+#         # print(covered, x)
+#         match t: 
+#             case "s": numberOfOpenIntervals += 1
+#             case "e": numberOfOpenIntervals -= 1
+#             case   _: raise NotImplementedError("should ever happen")
+#     return covered - B[i] # subtract beacons
 
 
-def fixRange(x, xmax):
-    if x < 0:    return 0
-    if x > xmax: return xmax
-    return x
-
-def calcRowPartTwo(i, rowEventPoints, xmax, findIndex=False):
+def calcRow(i, rowEventPoints, partTwo=False, xmax=-1, findIndex=False):
     assert len(rowEventPoints) > 0
 
     rowEventPoints = sorted(rowEventPoints, key=cmp_to_key(lambda e1, e2: orderOfEventPoints(e1, e2)))
-    rowEventPoints = [(t, fixRange(x, xmax)) for (t,x) in rowEventPoints]
+    if partTwo: rowEventPoints = [(t, fixRange(x, xmax)) for (t,x) in rowEventPoints]
     covered = 1
     numberOfOpenIntervals = 0
     _, last = rowEventPoints[0]
@@ -85,7 +76,6 @@ def calcRowPartTwo(i, rowEventPoints, xmax, findIndex=False):
         if numberOfOpenIntervals == 0 and x != last and t == "s": 
             covered += 1
         last = x
-        # print(covered, x)
         match t: 
             case "s": numberOfOpenIntervals += 1
             case "e": 
@@ -96,12 +86,27 @@ def calcRowPartTwo(i, rowEventPoints, xmax, findIndex=False):
     return covered - B[i] # subtract beacons
 
 
-xmax = 20
-# xmax = 4000000
+### -----------------------> PART ONE -----------------------> ###
+r1 = 10       # test input
+# r1 = 2000000    # real input
+print("PART ONE:", calcRow(r1, l[r1]))
+
+
+
+
+
+### -----------------------> PART TWO -----------------------> ###
+def fixRange(x, xmax):
+    if x < 0:    return 0
+    if x > xmax: return xmax
+    return x
+
+xmax = 20     # test input
+# xmax = 4000000  # real input
 for i in range(0, min(len(l), xmax + 1)):
-    if (r := calcRowPartTwo(i, l[i], xmax)) + B[i] != xmax + 1: 
-        print("PART TWO i:", i)
-        print(calcRowPartTwo(i, l[i], xmax, findIndex=True))
+    if (calcRow(i, l[i], partTwo=True, xmax=xmax, findIndex=False)) + B[i] != xmax + 1: 
+        x = calcRow(i, l[i], partTwo=True, xmax=xmax, findIndex=True)
+        print("PART TWO x, y:", x, ",", i, " ->", x * 4000000 + i)
         break
 
 
