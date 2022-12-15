@@ -13,7 +13,7 @@ def manhattenDist(r):
 def returnStartAndEnd(sx, d):
     return [(sx - d, "a"), (sx + d, "b")]
 
-
+### <--------- find event points in every row ---------> ###
 maxDist = max([manhattenDist(r) for r in input])
 l = [[] for _ in range(-maxDist, ymax + maxDist)] # input wraps around!
 
@@ -26,12 +26,11 @@ for y in range(n):
         l[sy - j] += returnStartAndEnd(sx, d - j)
         l[sy + j] += returnStartAndEnd(sx, d - j)
 
-
 B = defaultdict(int)
 for bx, by in set([(bx, by) for _, _, bx, by in input]):
     B[by] += 1
 
-
+### <--------- find possible positions in row ---------> ###
 def calcRow(i, rowEventPoints, partTwo=False, xmax=-1, findIndex=False):
     rowEventPoints = sorted(rowEventPoints)
     if partTwo: rowEventPoints = [(fixRange(x, xmax),t) for (x,t) in rowEventPoints]
@@ -39,27 +38,26 @@ def calcRow(i, rowEventPoints, partTwo=False, xmax=-1, findIndex=False):
     numberOfOpenIntervals = 0
     last = rowEventPoints[0][0] - 1
     for x,t in rowEventPoints:
-        if numberOfOpenIntervals > 0:
-                    covered += x - last
-        if numberOfOpenIntervals == 0 and x != last and t == "a":
+        if numberOfOpenIntervals > 0:                             
+            covered += x - last
+        if numberOfOpenIntervals == 0 and x != last and t == "a": 
             covered += 1
         last = x
-        match t: 
-            case "a": numberOfOpenIntervals += 1
-            case "b": 
-                numberOfOpenIntervals -= 1
-                if numberOfOpenIntervals == 0 and findIndex:
-                    return x + 1
-    return covered - B[i] # subtract beacons
+        if t == "a": numberOfOpenIntervals += 1
+        else: # t == "b"
+            numberOfOpenIntervals -= 1
+            if numberOfOpenIntervals == 0 and findIndex:
+                return x + 1
+    return covered - B[i] # subtract beacons in row
 
 
-### -----------------------> PART ONE -----------------------> ###
+### <----------------------- PART ONE -----------------------> ###
 # r1 = 10       # test input
 r1 = 2000000    # real input
 print("PART ONE:", calcRow(r1, l[r1]))
 
 
-### -----------------------> PART TWO -----------------------> ###
+### <----------------------- PART TWO -----------------------> ###
 def fixRange(x, xmax):
     if x < 0:   return 0
     else:       return min(x, xmax)      

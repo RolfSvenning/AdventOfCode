@@ -3,7 +3,7 @@ from functools import cmp_to_key
 
 packet_pairs = [eval("[" + re.sub("\n", ",", pair) + "]") for pair in open("2022/Input/13.txt").read().strip().split("\n\n")]
 
-### -----------------------> PART ONE -----------------------> ###
+### <----------------------- PART ONE -----------------------> ###
 def orderOfPair(ps, qs):
     match ps, qs:
         case int(), int(): 
