@@ -1,7 +1,7 @@
 from functools import cache
 import re
 
-input = [[l[0][0], int(l[1]), set([x[0] for x in l[2:]])] for l in [re.findall("\d+|[A-Z][A-Z]+", l) for l in open("2022/Input/16.txt").readlines()]]
+input = [[l[0], int(l[1]), set(l[2:])] for l in [re.findall("\d+|[A-Z][A-Z]+", l) for l in open("2022/Input/16.txt").readlines()]]
 
 class Vertex:
   def __init__(self, id, rate, edges):
@@ -13,6 +13,7 @@ class Vertex:
     return f"({self.rate}, {self.edges})"
 
 G = {u:Vertex(u, rate, adj) for u, rate, adj in input}
+print("G1", G)
 
 def BFS(u):
     visited = [u]
@@ -41,19 +42,20 @@ def skipNode(u):
         G[v].edges -= set([u,v])
 
 for u in G.keys():
-    if G[u].rate == 0 and u != "A": skipNode(u)
+    if G[u].rate == 0 and u != "AA": skipNode(u)
 
-G = {u:node for u,node in G.items() if node.rate != 0 or u == "A"}
-print(G)
+G = {u:node for u,node in G.items() if node.rate != 0 or u == "AA"}
+print("G2", G)
 
 @cache
 def releasePressure(u, time, opened):
+    # print(opened)
     if time <= 0: return 0
 
     res = [0] * (len(G[u].edges) + 1)
     # print("time", time)
     if u not in opened:
-        res[0] = releasePressure(u, time - 1, opened | set(u)) + (time - 1) * G[u].rate # <------------------------------ time - 1
+        res[0] = releasePressure(u, time - 1, opened | set([u])) + (time - 1) * G[u].rate # <------------------------------ time - 1
 
     for i, v in enumerate(G[u].edges):
         assert D[(u,v)] != 0
@@ -62,6 +64,6 @@ def releasePressure(u, time, opened):
     # print("res:", res)
     return max(res)
 
-p1 = releasePressure("A", 30, frozenset()) # <------------------------------ 29 and start
+p1 = releasePressure("AA", 30, frozenset()) # <------------------------------ 29 and start
 
 print(p1)
