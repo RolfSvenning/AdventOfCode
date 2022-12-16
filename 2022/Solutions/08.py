@@ -1,4 +1,5 @@
 import numpy as np
+
 input = np.array([list(map(int, row)) for row in open("2022/Input/08.txt").read().strip().split("\n")])
 n, m = np.shape(input)
 
