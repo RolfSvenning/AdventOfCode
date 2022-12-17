@@ -2,8 +2,6 @@ import numpy as np
 
 jets = open("2022/Input/17.txt").read().strip()
 
-# <---------------- ADD TYPES TO NP ARRAY (ONLY 1 BIT NEEDED)
-
 s0 = np.array([1,1,1,1]).reshape((1,4))
 
 s1 = np.array([[0,1,0], 
@@ -34,7 +32,7 @@ shapes = [s0, s1, s2, s3, s4]
 
 def simulate(rocksCount, partTwo=False):
     foundCycle = not partTwo
-    B = np.array([[1,0,0,0,0,0,0,0,1]] * 7 + [[1] * 9])
+    B = np.array([[1,0,0,0,0,0,0,0,1]] * 7 + [[1] * 9], dtype="byte")
     D = {"<": -1, ">": 1}
     H = {} # heights at time i
     S = {} # state -> # buildings placed
