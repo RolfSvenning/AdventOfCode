@@ -53,8 +53,8 @@ print(f"15 largest distances: {sorted(D.values())[-15:]}\nGraph input size: {len
 ### <----------------------- PART ONE & TWO -----------------------> ###
 @cache
 def releasePressure2(us, times, opened):
-    # both done, 2nd check reduces time by factor 2. !<----------- DANGER !!!!!! ------------ SET TO MAX DIST = 16, but 4 is enough for input
-    if (max(times) <= 0 or abs(times[0] - times[1]) > 16) and times[1] != -1: return 0 
+    # both done, 2nd check reduces time by factor 2.  !<----------- DANGER !!!!!! ------------ SET TO MAX DIST = 16, but 4 is enough for input
+    if (max(times) <= 0 or abs(times[0] - times[1]) > 4) and times[1] != -1: return 0 
     
     bestSoFar = 0
     for i, (u, time) in enumerate(list(zip(us, times))):
