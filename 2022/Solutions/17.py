@@ -87,5 +87,5 @@ def simulate(rocksCount, partTwo=False):
     return (np.shape(B)[0] - 7 - 1) + (0 if not partTwo or not foundCycle else cyclesHeight)       
 
 
-print("PART ONE:", simulate(2022))
+print("PART ONE:", simulate(2022, partTwo=True))
 print("PART TWO:", simulate(1000000000000, partTwo=True))
