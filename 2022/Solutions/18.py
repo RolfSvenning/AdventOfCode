@@ -21,32 +21,37 @@ def partOne():
 surfaceArea = partOne()
 # surfaceArea = 4536
  
+maxX, maxY, maxZ = np.max(np.array(max([input[i][c]]) for i in range(n) for c in range(3)))
+print(maxX, maxY, maxZ)
 
 
-setInput = set(tuple(input[i]) for i in range(len(input)))
-print("n", len(setInput))
-
-def trapped(p):
-    for i in range(3):
-        for delta in [-1, 1]:
-            p_ = p[:]
-            p_[i] += delta
-            if tuple(p_) not in setInput:
-                return 0
-    return 1
 
 
-print("trapped [2 2 5]:" , trapped([2,2,5]))
+# setInput = set(tuple(input[i]) for i in range(len(input)))
+# print("n", len(setInput))
 
-countTrapped = 0
-for p in input:
-    for i in range(3):
-        for delta in [-1, 1]:
-            p_ = p[:]
-            p_[i] += delta
-            if tuple(p_) not in setInput and trapped(p_.tolist()): 
-                countTrapped += 1
+# def trapped(p):
+#     for i in range(3):
+#         for delta in [-1, 1]:
+#             p_ = p[:]
+#             p_[i] += delta
+#             if tuple(p_) not in setInput:
+#                 return 0
+#     return 1
 
-print("countTrapped:", countTrapped / 3)
-print("surfaceArea:", surfaceArea)
-print("PART TWO:", surfaceArea - ((countTrapped / 3) * 6))
+
+# print("trapped [2 2 5]:" , trapped([2,2,5]))
+
+# countTrapped = 0
+# for p in input:
+#     for i in range(3):
+#         for delta in [-1, 1]:
+#             p_ = p[:]
+#             p_[i] += delta
+#             if tuple(p_) not in setInput and trapped(p_.tolist()): 
+#                 countTrapped += 1
+
+# print("countTrapped:", countTrapped / 3)
+# print("surfaceArea:", surfaceArea)
+# print("PART TWO:", surfaceArea - ((countTrapped / 3) * 6))
+
