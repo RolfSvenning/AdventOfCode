@@ -7,7 +7,7 @@ end = tuple(x[0] for x in np.where(heightmap == "E"))
 heightmap[start] = "a"
 heightmap[end] = "z"
 
-### -----------------------> PART ONE -----------------------> ###
+### <----------------------- PART ONE -----------------------> ###
 def neighbours(x, y):
     ns = []
     if 0 <= x - 1 < n and 0 <= y < m: ns += [(x - 1, y)]
@@ -30,7 +30,7 @@ Q = [start]
 for (x,y) in Q:
     Q += visitNeighbours(x, y)
 
-### -----------------------> PART TWO -----------------------> ###
+### <----------------------- PART TWO -----------------------> ###
 whereA = np.where(heightmap == "a")
 posA = list(zip(list(whereA[0]), list(whereA[1])))
 visited = dict([((x,y), 0) for (x,y) in posA])

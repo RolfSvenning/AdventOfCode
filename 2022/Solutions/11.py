@@ -6,7 +6,7 @@ monkeys = open("2022/Input/11.txt").read().strip().split("Monkey ")[1:]
 monkeys = [[re.findall("\d+|old|[+]|[*]", l) for l in m.strip().split("\n")] for m in monkeys]
 n = len(monkeys)
 
-### -----------------------> PART ONE -----------------------> ###
+### <----------------------- PART ONE -----------------------> ###
 class Monkey():
     def __init__(self, id, items, op, test, monkeyTrue, monkeyFalse):
         self.id = int(id[0])
@@ -53,7 +53,7 @@ for _ in range(20): # rounds
 
 print("PART ONE:", reduce(mul := lambda x,y: x*y, sorted([m.inspects for m in monkeys])[-2:]))
 
-### -----------------------> PART TWO -----------------------> ###
+### <----------------------- PART TWO -----------------------> ###
 divisors = [m.divis for m in monkeys2]
 for m in monkeys2:
         m.changeToPartTwo(divisors)

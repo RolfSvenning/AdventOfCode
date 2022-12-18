@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def buildA(xs, ys, rock_paths):
     xmin, xmax = min(xs), max(xs)
     xrange = xmax - xmin
@@ -68,7 +67,9 @@ def partOneAndTwo(xs, ys, rock_parths, partTwo=False):
             np.savetxt("2022/Output/14_partTwo.out", A, fmt="%s")
             print("PART TWO:", i + 1)
             break
-
+        # if not partTwo: 
+        #     print(i)
+        #     printA(A)
 
 rock_paths1 = [[[int(c) for c in xy.split(",")] for xy in l.strip().split(" -> ")] for l in open("2022/Input/14.txt").readlines()]
 xs1 = [x for path in rock_paths1 for x,_ in path] + [500]
