@@ -52,4 +52,4 @@ def BFS(start): # for all coords in cube defined by input paddened with one extr
 
     return surfaceArea2
 
-print("PART TWO: ", BFS((maxs[0] + 1, maxs[1] + 1, maxs[2] + 1)))
+print("PART TWO:", BFS((maxs[0] + 1, maxs[1] + 1, maxs[2] + 1)))
