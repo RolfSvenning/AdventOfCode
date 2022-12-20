@@ -83,6 +83,8 @@ for i,b in enumerate(input[:3]):
 print("res", res)
 print("PART TWO", res[0] * res[1] * res[2])
 
+# CACHE MAUNUALLY ONLY RELEVANT PART OF STATE
+
 # Notes:
 # Maybe not best to spend as much as possible in every round?
 

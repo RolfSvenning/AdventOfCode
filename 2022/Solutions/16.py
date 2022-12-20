@@ -46,9 +46,7 @@ skipNode("AA")
 G = {u:node for u,node in G1.items() if node.rate != 0 or u == "AA"}
 D = {k:v for k,v in D.items() if k[0] in G and k[1] in G}
 
-
 print(f"15 largest distances: {sorted(D.values())[-15:]}\nGraph input size: {len(G1)}\nCompressed graph size: {len(G)}\n")
-
 
 ### <----------------------- PART ONE & TWO -----------------------> ###
 @cache
