@@ -25,8 +25,8 @@ def findPath(x, node):
     if x == node: return [x]
     match input[x]:
         case [c1, _, c2]: 
-            if   node in (path1 := findPath(c1, node)): return [x] + path1
-            elif node in (path2 := findPath(c2, node)): return [x] + path2
+            if   path1 := findPath(c1, node): return [x] + path1
+            elif path2 := findPath(c2, node): return [x] + path2
     return []
 
 
