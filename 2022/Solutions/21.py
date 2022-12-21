@@ -33,7 +33,7 @@ def findPath(x, node):
 def calcTarget(x, par, t):
     c1, op, c2 = input[par]
     isLeftChild = x == c1
-    s = (eval(c2) if isLeftChild else eval(c1))
+    s = eval(c2) if isLeftChild else eval(c1)
     match op:
         case "+": return t - s
         case "-": return t + s if isLeftChild else s - t
