@@ -47,7 +47,8 @@ def findTargets(x, t):
         case [c1, _, c2]:
             if c1 in path: return findTargets(c1, calcTarget(c1, x, t))
             else         : return findTargets(c2, calcTarget(c2, x, t))
-        case _: return t
+        case _: 
+            return t
 
 targetVal = eval(input["root"][2] if path[1] == input["root"][0] else input["root"][0])
 print("PART TWO:", findTargets(path[1], targetVal))
