@@ -16,7 +16,7 @@ def eval(x):
     match input[x]:
         case [c1, op, c2]: 
             return performOperation(eval(c1), op, eval(c2))
-        case num: return num
+        case v: return v
 
 print("PART ONE:", eval("root"))
 
@@ -30,9 +30,10 @@ def findPath(x, node):
     return []
 
 
-def calcTargetVal(x, par, op, t):
+def calcTarget(x, par, t):
     isLeftChild = x == input[par][0]
-    s = (eval(input[par][2]) if isLeftChild else eval(input[par][0]))
+    c1, op, c2 = input[par]
+    s = (eval(c2) if isLeftChild else eval(c1))
     match op:
         case "+": return t - s
         case "-": return t + s if isLeftChild else s - t
@@ -41,14 +42,12 @@ def calcTargetVal(x, par, op, t):
 
 
 path = findPath("root", "humn")
-def findTargetValue(x, targetVal):
+def findTargets(x, t):
     match input[x]:
-        case [c1, op, c2]:
-            if c1 in path: return findTargetValue(c1, calcTargetVal(c1, x, op, targetVal))
-            else         : return findTargetValue(c2, calcTargetVal(c2, x, op, targetVal))
-        case _: return targetVal
+        case [c1, _, c2]:
+            if c1 in path: return findTargets(c1, calcTarget(c1, x, t))
+            else         : return findTargets(c2, calcTarget(c2, x, t))
+        case _: return t
 
-
-isLeftChild = input["root"][0] if path[1] == input["root"][0] else input["root"][1]
-targetVal = eval(input["root"][2]) if isLeftChild else eval(input["root"][1])
-print("PART TWO:", findTargetValue(path[1], targetVal))
+targetVal = eval(input["root"][2] if path[1] == input["root"][0] else input["root"][0])
+print("PART TWO:", findTargets(path[1], targetVal))
