@@ -1,75 +1,75 @@
 import numpy as np
 import re
+from enum import Enum
 
 # PARSING INPUT ...
-B,path = open("2022/Input/22.txt").read().split("\n\n")
+B_,path = open("2022/Input/22.txt").read().split("\n\n")
 path = [int(p) if str.isdigit(p) else p for p in re.findall("\d+|[A-Z]", path)]
-B = B.split("\n")
-n = max([len(r) for r in B])
-B = [r if len(r) == n else r + " " * (n - len(r)) for  r in B]
-B = np.array([list(l) for l in B])
-B[B == " "] = "O"
-B1 = B.copy()
+B_ = B_.split("\n")
+n = max([len(r) for r in B_])
+B_ = [r if len(r) == n else r + " " * (n - len(r)) for  r in B_]
+B_ = np.array([list(l) for l in B_])
+B_[B_ == " "] = "O"
+B1 = B_.copy()
 n,m = np.shape(B1)
 # print("n", n)
 # print(B,path)
 print("n,m:",n,m)
 
 ### <----------------------- PART ONE -----------------------> ###
-x,y = 0,np.argwhere(B1[0] == ".")[0][0]
-
-facings = [(0,1), (1,0), (0,-1), (-1,0)]
-F = {0:">", 1:"v", 2:"<", 3:"^"}
-f = 0
-B1[x,y] = F[f]
-dx, dy = facings[f]
-
-def moveXY(x, y, f):
+def moveP1(x, y, f, facings):
     dx, dy = facings[f]
     return (x + dx) % n, (y + dy) % m
 
-for r, p in enumerate(path):
-    assert B1[x,y] in ".>v<^"
-    if type(p) == int:
-        for i in range(p):
-            match B1[moveXY(x, y, f)]:
-                case "."|">"|"v"|"<"|"^": 
-                    x,y = moveXY(x, y, f)
-                    B1[x,y] = F[f % 4]
-                case "#": break
-                case "O":
-                    x_, y_ = x,y
-                    while(B1[moveXY(x_, y_, f)] == "O"):
-                        x_,y_ = moveXY(x_, y_, f)
-                        match B1[moveXY(x_, y_, f)]:
-                            case "#": break
-                            case "."|">"|"v"|"<"|"^": 
-                                x,y = moveXY(x_, y_, f)
-                                B1[x,y] = F[f]
+def partOneAndTwo(B, moveP1):
+    x,y = 0,np.argwhere(B[0] == ".")[0][0]
+
+    facings = [(0,1), (1,0), (0,-1), (-1,0)]
+    F = {0:">", 1:"v", 2:"<", 3:"^"}
+    f = 0
+    B[x,y] = F[f]
+
+    for p in path:
+        assert B[x,y] in ".>v<^"
+        if type(p) == int:
+            for _ in range(p):
+                match B[moveP1(x, y, f, facings)]:
+                    case "."|">"|"v"|"<"|"^": 
+                        x,y = moveP1(x, y, f, facings)
+                        B[x,y] = F[f % 4]
+                    case "#": break
+                    case "O":
+                        x_, y_ = x,y
+                        while(B[moveP1(x_, y_, f, facings)] == "O"):
+                            x_,y_ = moveP1(x_, y_, f, facings)
+                            match B[moveP1(x_, y_, f, facings)]:
+                                case "#": break
+                                case "."|">"|"v"|"<"|"^": 
+                                    x,y = moveP1(x_, y_, f, facings)
+                                    B[x,y] = F[f]
+                    case _  : raise NotImplementedError(p)
+        else:
+            match p:
+                case "L": f = (f - 1) % 4
+                case "R": f = (f + 1) % 4
                 case _  : raise NotImplementedError(p)
-    else:
-        match p:
-            case "L": f = (f - 1) % 4
-            case "R": f = (f + 1) % 4
-            case _  : raise NotImplementedError(p)
-        dx, dy = facings[f]
-        B1[x,y] = F[f]
+            B[x,y] = F[f]
+    return x,y,f
 
-    # print(p, "\n", B)
-
-    # if r == 30: break
+x,y,f = partOneAndTwo(B1, moveP1)
 
 print("PART ONE:", (x + 1) * 1000 + (y + 1) * 4 + f)
 # print("coords:", x, y, f)
 np.savetxt("2022/Output/22_partOne.out", B1, fmt="%s")
 
 ### <----------------------- PART TWO -----------------------> ###
-B2 = B.copy()
 
 
-if len(path) > 100: # NOT TEST INPUT, HAVE TO TRANSFORM...
+
+
+def convertInputToTestShape(B):
     n_t = n // 4 # My input is 4 tiles high
-    tiles = [B2[(i // 3) * n_t:((i // 3) + 1) * n_t, (i % 3) * n_t: ((i % 3) + 1) * n_t] for i in range(12)]
+    tiles = [B[(i // 3) * n_t:((i // 3) + 1) * n_t, (i % 3) * n_t: ((i % 3) + 1) * n_t] for i in range(12)]
     for t in tiles:
         assert np.shape(t) == (50,50)
 
@@ -83,21 +83,20 @@ if len(path) > 100: # NOT TEST INPUT, HAVE TO TRANSFORM...
     B2 = np.vstack(rows)
 
     assert np.shape(B2) == (150, 200)
+    return B2
 
-# np.savetxt("2022/Output/22_partTwo.out", B2, fmt="%s")
+B2 = convertInputToTestShape(B_)
+
+facings = [(0,1), (1,0), (0,-1), (-1,0)]
+F = {0:">", 1:"v", 2:"<", 3:"^"}
 x,y = 0,np.argwhere(B2[0] == ".")[0][0]
-
 f = 0
 B2[x,y] = F[f]
 dx, dy = facings[f]
-
 n,m = np.shape(B2)
+w = n // 3
 
-n_tile, m_tile = n // 3, m // 4
-assert n_tile == n_tile
-w = n_tile
 
-from enum import Enum
 class C(Enum):
     W0 = 0
     W1M = w - 1
@@ -109,7 +108,6 @@ class C(Enum):
     W4M = 4 * w - 1
     W4 = 4 * w
 
-# print("n_tile, m_tile:", n_tile, m_tile)
 
 def toC(c):
     if c == 0 * w:      return C.W0
@@ -121,27 +119,11 @@ def toC(c):
     if c == 3 * w:      return C.W3
     if c == 4 * w - 1:  return C.W4M
     if c == 4 * w:      return C.W4
-    return None
 
 def moveXY_2(x, y, f):
-    # w = C.W # <----------- why needed? ------------
-    # print("C.W1", C.W1)
-    # print(x,y,w)
     xt, yt = x // w, y // w
     dx, dy = facings[f]
-    # print("matching:", toC(x), xt, toC(y), yt, f)
-    match toC(x), xt, toC(y), yt, f: # <--------------------------------------------DANGER x+1, y+1
-        # ------> TILE #ID #POSITION/#DIRECTION <------
-        # WHEN ENTERING RIGHT SIDE OF TILE THEN : c * w - 1 (for c in 0,1,2,3)
-        # WHEN ENTERING LEFT SIDE OF TILE THEN  : c * w     (for c in 0,1,2,3)
-        # WHEN ENTERING TOP SIDE OF TILE THEN   : c * w     (for c in 0,1,2,3)
-        # WHEN ENTERING BOTTOM SIDE OF TILE THEN: c * w - 1 (for c in 0,1,2,3)
-
-        # TOP MATCH C.W
-        # BOTTOM MATCH C.W_M
-        # LEFT MATCH C.W
-        # RIGHT MATCH C.W_M
-
+    match toC(x), xt, toC(y), yt, f: 
         # TILE 2 TOP/UP ---> TILE 4 TOP/DOWN
         case C.W0, _,  _, 2, 3:     return (w, 3 * w - 1 - y, 1)
         # TILE 4 TOP/UP ---> TILE 2 TOP/DOWN
@@ -177,15 +159,9 @@ def moveXY_2(x, y, f):
         # TILE 11 TOP/UP ---> TILE 6 RIGHT/LEFT
         case C.W2, _, _, 3, 3:      return (w + 4 * w - 1 - y, 3 * w - 1, 2)
 
-        # facings = [(0,1), (1,0), (0,-1), (-1,0)]
-        # F = {0:">", 1:"v", 2:"<", 3:"^"}
-        case _:
-            # print("all matching:", toC(x), xt, toC(y), yt, f)
-            assert ((x + dx) % n, (y + dy) % m) == ((x + dx), (y + dy))
-            return (x + dx), (y + dy), f
+        # NORMAL MOVE BETWEEN ADJACENT TILES
+        case _:                     return (x + dx), (y + dy), f
 
-# print("move was:", print(moveXY_2(4, 6, 3)))
-# assert moveXY_2(4, 6, 3) == (2, 8, 0), moveXY_2(4, 6, 3)
 
 for i,p in enumerate(path):
     assert B2[x,y] in ".>v<^", (B2[x,y],i, p)
@@ -205,9 +181,8 @@ for i,p in enumerate(path):
         dx, dy = facings[f]
         B2[x,y] = F[f]
 
-    # print(p, "\n", B)
 
-    # if r == 30: break
+# x, y, z = partOneAndTwo(B2, moveXY_2)
 
 print("PART TWO:", (x + 1) * 1000 + (y - 50 + 1) * 4 + f)
 print("coords:", x, y, f)
