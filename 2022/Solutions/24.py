@@ -46,7 +46,6 @@ def BFS(start_time, end):
         if p == end: break
         for q, qs in adjMoves((p, ps)):
             if (q, qs % len(states)) in visited: continue
-            if len(Q) % 10000 == 0: print(len(Q))
             visited.add((q, qs % len(states)))
             Q.append((q, qs))
     return (ps + 1)
