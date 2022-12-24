@@ -3,56 +3,52 @@ import re
 from enum import Enum
 
 # PARSING INPUT ...
-B_,path = open("2022/Input/22.txt").read().split("\n\n")
+B,path = open("2022/Input/22.txt").read().split("\n\n")
 path = [int(p) if str.isdigit(p) else p for p in re.findall("\d+|[A-Z]", path)]
-B_ = B_.split("\n")
-n = max([len(r) for r in B_])
-B_ = [r if len(r) == n else r + " " * (n - len(r)) for  r in B_]
-B_ = np.array([list(l) for l in B_])
-B_[B_ == " "] = "O"
-B1 = B_.copy()
-n,m = np.shape(B1)
-# print("n", n)
-# print(B,path)
-print("n,m:",n,m)
+B = B.split("\n")
+n = max([len(r) for r in B])
+B = [r if len(r) == n else r + " " * (n - len(r)) for  r in B]
+B = np.array([list(l) for l in B])
+B[B == " "] = "O"
+B1 = B.copy()
+n, m = np.shape(B1)
+
 
 ### <----------------------- PART ONE -----------------------> ###
-def moveP1(x, y, f, facings):
+facings = [(0,1), (1,0), (0,-1), (-1,0)]
+F = {0:">", 1:"v", 2:"<", 3:"^"}
+
+def moveP1(x, y, f):
     dx, dy = facings[f]
-    return (x + dx) % n, (y + dy) % m
+    return (x + dx) % n, (y + dy) % m, f
 
-def partOneAndTwo(B, moveP1):
+def partOneAndTwo(B, move):
     x,y = 0,np.argwhere(B[0] == ".")[0][0]
-
-    facings = [(0,1), (1,0), (0,-1), (-1,0)]
     F = {0:">", 1:"v", 2:"<", 3:"^"}
     f = 0
     B[x,y] = F[f]
 
     for p in path:
-        assert B[x,y] in ".>v<^"
         if type(p) == int:
             for _ in range(p):
-                match B[moveP1(x, y, f, facings)]:
+                match B[move(x, y, f)[:2]]:
                     case "."|">"|"v"|"<"|"^": 
-                        x,y = moveP1(x, y, f, facings)
+                        x,y,f = move(x, y, f)
                         B[x,y] = F[f % 4]
                     case "#": break
-                    case "O":
+                    case "O": # only needed for part 1
                         x_, y_ = x,y
-                        while(B[moveP1(x_, y_, f, facings)] == "O"):
-                            x_,y_ = moveP1(x_, y_, f, facings)
-                            match B[moveP1(x_, y_, f, facings)]:
+                        while(B[move(x_, y_, f)[:2]] == "O"):
+                            x_,y_,f = move(x_, y_, f)
+                            match B[move(x_, y_, f)[:2]]:
                                 case "#": break
                                 case "."|">"|"v"|"<"|"^": 
-                                    x,y = moveP1(x_, y_, f, facings)
+                                    x,y,f = move(x_, y_, f)
                                     B[x,y] = F[f]
-                    case _  : raise NotImplementedError(p)
         else:
             match p:
                 case "L": f = (f - 1) % 4
                 case "R": f = (f + 1) % 4
-                case _  : raise NotImplementedError(p)
             B[x,y] = F[f]
     return x,y,f
 
@@ -62,40 +58,22 @@ print("PART ONE:", (x + 1) * 1000 + (y + 1) * 4 + f)
 # print("coords:", x, y, f)
 np.savetxt("2022/Output/22_partOne.out", B1, fmt="%s")
 
+
 ### <----------------------- PART TWO -----------------------> ###
-
-
-
-
 def convertInputToTestShape(B):
+    n = np.shape(B)[0]
     n_t = n // 4 # My input is 4 tiles high
     tiles = [B[(i // 3) * n_t:((i // 3) + 1) * n_t, (i % 3) * n_t: ((i % 3) + 1) * n_t] for i in range(12)]
-    for t in tiles:
-        assert np.shape(t) == (50,50)
 
     B2row1 = np.hstack([tiles[0], tiles[0], tiles[1], tiles[0]])
     B2row2 = np.hstack([np.rot90(tiles[9], -1), np.rot90(tiles[6], -1), tiles[4], tiles[0]])
     B2row3 = np.hstack([tiles[0], tiles[0], tiles[7], np.rot90(tiles[2], 2)])
     rows = [B2row1, B2row2, B2row3]
-    
-    for r in rows:
-        assert np.shape(r) == (50,200), np.shape(r)
-    B2 = np.vstack(rows)
 
-    assert np.shape(B2) == (150, 200)
-    return B2
+    return np.vstack(rows)
 
-B2 = convertInputToTestShape(B_)
-
-facings = [(0,1), (1,0), (0,-1), (-1,0)]
-F = {0:">", 1:"v", 2:"<", 3:"^"}
-x,y = 0,np.argwhere(B2[0] == ".")[0][0]
-f = 0
-B2[x,y] = F[f]
-dx, dy = facings[f]
-n,m = np.shape(B2)
-w = n // 3
-
+B2 = convertInputToTestShape(B)
+w = np.shape(B2)[0] // 3
 
 class C(Enum):
     W0 = 0
@@ -107,7 +85,6 @@ class C(Enum):
     W3 = 3 * w
     W4M = 4 * w - 1
     W4 = 4 * w
-
 
 def toC(c):
     if c == 0 * w:      return C.W0
@@ -162,36 +139,6 @@ def moveXY_2(x, y, f):
         # NORMAL MOVE BETWEEN ADJACENT TILES
         case _:                     return (x + dx), (y + dy), f
 
-
-for i,p in enumerate(path):
-    assert B2[x,y] in ".>v<^", (B2[x,y],i, p)
-    if type(p) == int:
-        for i in range(p):
-            match B2[moveXY_2(x, y, f)[:2]]:
-                case "."|">"|"v"|"<"|"^": 
-                    x, y, f = moveXY_2(x, y, f)
-                    B2[x,y] = F[f]
-                case "#": break
-                case _  : raise NotImplementedError(p, B2[moveXY_2(x, y, f)[:2]], moveXY_2(x, y, f)[:2], x, y)
-    else:
-        match p:
-            case "L": f = (f - 1) % 4
-            case "R": f = (f + 1) % 4
-            case _  : raise NotImplementedError(p)
-        dx, dy = facings[f]
-        B2[x,y] = F[f]
-
-
-# x, y, z = partOneAndTwo(B2, moveXY_2)
-
+x, y, f = partOneAndTwo(B2, moveXY_2)
 print("PART TWO:", (x + 1) * 1000 + (y - 50 + 1) * 4 + f)
-print("coords:", x, y, f)
-np.savetxt("2022/Output/22_partTwo.out", B2, fmt="%s")
-
-assert 1 == 0, "MOVE COORDS BACK TO ORIGINAL.... -50 in PART TWO is now hardcoded"
-# 64519 too low
-
-# 78491
-
-# 85315 too high
-# 144457 too high
+# MOVE COORDS BACK TO ORIGINAL.... -50 in PART TWO is now hardcoded based on where I end up for my input

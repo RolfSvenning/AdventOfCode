@@ -1,21 +1,10 @@
 import numpy as np
 from collections import defaultdict
 
+
 I = np.array([list(l.strip()) for l in open("2022/Input/23.txt").readlines()])
 elves = set((x,y) for x,y in zip(np.where(I == "#")[0], np.where(I == "#")[1]))
 n = len(elves)
-
-
-def printElves(elves):
-    xs,ys = [x for x,_ in elves], [y for _,y in elves]
-    xmin, xmax, ymin, ymax = min(xs), max(xs), min(ys), max(ys)
-    A = np.array([["."] * (ymax - ymin + 1) for _ in range (xmax - xmin + 1)])
-    for e in elves:
-        x,y = e
-        A[x + abs(xmin), y + abs(ymin)] = "#"
-    s = "".join(["".join(r) + "\n" for r in A])
-    print(s)
-
 
 def isEmptyAround(xy, elves):
     x,y = xy
@@ -33,34 +22,37 @@ def getProposal(xy, elves, first):
             return (x + dx, y + dy)
     return xy
 
+r = 1
+first = 0
+while True:
+    # FIRST HALF
+    ps = defaultdict(int) # proposals
+    for e in elves:
+        if isEmptyAround(e, elves): continue
+        ps[getProposal(e, elves, first)] += 1
+    
+    # SECOND HALF
+    elves2 = set([e if isEmptyAround(e, elves) or ps[getProposal(e, elves, first)] > 1 else getProposal(e, elves, first) for e in elves])
+    if elves == elves2:
+        print(f"PART TWO: {r}")
+        break
+    elves = elves2
 
-def simulateRounds(r, elves):
-    first = 0
+    if r == 10:
+        xs, ys = [x for x,_ in elves], [y for _,y in elves]
+        xmin, xmax, ymin, ymax = min(xs), max(xs), min(ys), max(ys)
+        print("PART ONE:", (xmax - xmin + 1) * (ymax - ymin + 1) - n)
+    
+    r += 1
+    first = (first + 1) % 4
+    print(f"round: {r}", end="\r") 
 
-    for i in range(r):
-        # FIRST HALF
-        ps = defaultdict(int) # proposals
-        for e in elves:
-            if isEmptyAround(e, elves): continue
-            ps[getProposal(e, elves, first)] += 1
-        
-        # SECOND HALF
-        elves2 = set([e if isEmptyAround(e, elves) or ps[getProposal(e, elves, first)] > 1 else getProposal(e, elves, first) for e in elves])
-        if elves == elves2:
-            print(f"breaking in round {i + 1}")
-            return elves2
-        elves = elves2
-        
-        assert len(elves) == n, (len(elves), elves)
-        first = (first + 1) % 4
-        print(f"round {i + 1}:")
-        # printElves(elves)
-        
-    return elves
-
-elves = simulateRounds(10, elves)
-# print("elves:", elves)
-
-xs,ys = [x for x,_ in elves], [y for _,y in elves]
-xmin, xmax, ymin, ymax = min(xs), max(xs), min(ys), max(ys)
-print("PART ONE:", (xmax - xmin + 1) * (ymax - ymin + 1) - n)
+# def printElves(elves):
+#     xs,ys = [x for x,_ in elves], [y for _,y in elves]
+#     xmin, xmax, ymin, ymax = min(xs), max(xs), min(ys), max(ys)
+#     A = np.array([["."] * (ymax - ymin + 1) for _ in range (xmax - xmin + 1)])
+#     for e in elves:
+#         x,y = e
+#         A[x + abs(xmin), y + abs(ymin)] = "#"
+#     s = "".join(["".join(r) + "\n" for r in A])
+#     print(s)
