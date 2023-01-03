@@ -10,7 +10,6 @@ def toDecimal(ds):
             case "0": sum +=  0 * (5**i)
             case "1": sum +=  1 * (5**i)
             case "2": sum +=  2 * (5**i)
-            case   _: raise NotImplementedError
     return sum
 
 def closerToA(ds, a, b):
@@ -22,7 +21,6 @@ def enc(d, isPositive):
         case 0: return "0"
         case 1: return "1" if isPositive else "-"
         case 2: return "2" if isPositive else "="
-        case _: raise NotImplementedError(d)
 
 def toSNAFU(ds, isPositive):
     if ds == 0: return []
@@ -51,4 +49,4 @@ def dec(ls):
     return "".join(reversed(l))
 
 
-print("PART TWO:", dec(toSNAFU(sum([toDecimal(ds) for ds in input]), True)))
+print("PART ONE:", dec(toSNAFU(sum([toDecimal(ds) for ds in input]), True)))
