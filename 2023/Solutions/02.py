@@ -1,9 +1,7 @@
 import re
 from functools import reduce
 
-# ls = [[re.findall("\d+ r|\d+ g|\d+ b", g) for g in l.strip().split(";")] for l in open("2023/input/02.txt").readlines()]
 ls = [[re.findall("\d+ [rgb]", g) for g in l.strip().split(";")] for l in open("2023/input/02.txt").readlines()]
-print(ls)
 games = [[[d.split(" ") for d in draws] for draws in g] for g in ls]
 
 ### <----------------------- PART ONE & TWO -----------------------> ###
