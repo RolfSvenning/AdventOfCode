@@ -31,5 +31,5 @@ for i,g in enumerate(games):
     powerSum += reduce(lambda x, y: x * y, M, 1)
     if possible: possibleSum += i + 1
 
-print(possibleSum)
-print(powerSum)
+print("PART ONE: ", possibleSum)
+print("PART TWO: ", powerSum)
