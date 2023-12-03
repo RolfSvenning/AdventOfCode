@@ -13,16 +13,7 @@ def nearSymbol(a, b, r):
     return len(around - allowed) > 0
 
 def numbersOnLine(l):
-    Ns = []
-    pos = 0
-    while (pos < m):
-        pat = re.compile("\d+")
-        obj = pat.search(l, pos)
-        if obj == None: break
-        span, match = obj.span(), obj[0]
-        Ns.append((int(match), span))
-        pos = span[1]
-    return Ns
+    return [(int(m[0]), m.span()) for m in re.finditer("\d+", l)]
 
 L = [num for i,l in enumerate(ls) for num,span in numbersOnLine(l) if nearSymbol(*span, i)]
 print("PART ONE: ", sum(L))
