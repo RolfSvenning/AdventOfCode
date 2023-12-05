@@ -1,32 +1,41 @@
-from os import supports_effective_ids
 import re
 
 seeds = list(map(int, re.findall("\d+", open("2023/input/05.txt").readline())))
-seedRanges = [(seeds[i], seeds[i] + seeds[i + 1]) for i in range(int(len(seeds) / 2))]
+seedRanges = [(seeds[2 * i], seeds[2 * i] + seeds[2 * i + 1]) for i in range(int(len(seeds) / 2))]
 ls = [re.findall("(\d+) (\d+) (\d+)", l) for l in open("2023/input/05.txt").read().split(":")[2:] ]
 
-
-for i,maps in enumerate(ls):
-    for i,seed in enumerate(seeds):
-        for rs in maps:
-            foundMap = False
-            (d, s, l) = list(map(int, rs))
+### <----------------------- PART ONE -----------------------> ###
+for maps in ls:
+    for i, seed in enumerate(seeds):
+        for m in maps:
+            d, s, l = list(map(int, m))
             if seed in range(s, s + l):
                 seeds[i] = d + seed - s
-                foundMap = True
-            if foundMap: break
+                break
 
-print(seeds)
 print("PART ONE: ", min(seeds))
 
+### <----------------------- PART TWO -----------------------> ###
+def f(r, m):
+    a, b = r 
+    d, s, l = list(map(int, m))
+    def m(i): return d + i - s
+    x, y = s, s + l
 
-print(seedRanges)
-for i,maps in enumerate(ls):
-    for i,(a,b) in enumerate(seedRanges):
-        for rs in maps:
-            foundMap = False
-            (d, s, l) = list(map(int, rs))
-            if seed in range(s, s + l):
-                seeds[i] = d + seed - s
-                foundMap = True
-            if foundMap: break
+    if a in range(x, y):
+        if b in range(x, y): return [(m(a), m(b))], (-1, -1)
+        else:                return [(m(a), m(y))], (y, b)
+    else:
+        if b in range(x, y): return [(m(x), m(b))], (a, x)
+        else:                return [], (a, b)
+
+for maps in ls:
+    nextRanges = []
+    for r in seedRanges:
+        for m in maps:
+            intersect, r = f(r, m)
+            nextRanges += intersect
+        if r[0] != r[1]: nextRanges.append(r)
+    seedRanges = nextRanges
+
+print("PART TWO: ", min([a for a, _ in seedRanges]))
