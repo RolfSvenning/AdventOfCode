@@ -3,7 +3,7 @@ from functools import reduce
 from sympy import solve, var
 from math import ceil, floor
 
-Ts, Ds = [list(map(int, re.findall("\d+", l))) for l in open("2023/input/06.txt").read().split("\n")]
+Ts, Ds = [list(map(int, re.findall("\d+", l))) for l in open("2023/input/06.txt").readlines()]
 T, D = [int("".join([str(l) for l in L])) for L in [Ts, Ds]]
 
 ### <----------------------- PART ONE & TWO -----------------------> ###

@@ -24,7 +24,7 @@ for i, l in enumerate(ls):
     for j, c in enumerate(l):
         if c != "*": continue
         allNums = list(itertools.chain(*[numbersOnLine(ls[k]) for k in range(max(0, i - 1), min(n, i + 2))]))
-        nearNums = [num for num, (a,b) in all if j in range(a-1,b+1)]
+        nearNums = [num for num, (a,b) in allNums if j in range(a-1,b+1)]
         if len(nearNums) == 2: Gs.append(nearNums[0] * nearNums[1])
 
 print("PART TWO: ", sum(Gs))
