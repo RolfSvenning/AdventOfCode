@@ -97,12 +97,12 @@ chars = [("A", 13), ("K", 12), ("Q", 11), ("T", 10)]
 S2 = {k:v for k,v in chars + nums + [("J", 1)]}
 
 def cmp2(a, b):
-    if "J" in a:
-        if "J" not in b:
-            return 1
-    else:
-        if "J" in b:
-            return -1
+    # if "J" in a:
+    #     if "J" not in b:
+    #         return 1
+    # else:
+    #     if "J" in b:
+    #         return -1
 
     at = jokerType(a) if "J" in a else typeOfCard(a)
     bt = jokerType(b) if "J" in b else typeOfCard(b)
@@ -115,10 +115,10 @@ print("PART TWO")
 # print(sortedCards2)
 # print(tie("32A45", "A2345", S2))
 
-print(sum(V[c] * (i + 1) for i, c in enumerate(sortedCards2)))
 # print(C)
 print([(c, jokerType(c) if "J" in c else typeOfCard(c)) for c in sortedCards2])
 
+print(sum(V[c] * (i + 1) for i, c in enumerate(sortedCards2)))
 
 assert(len(C) == len(set(C)))
 for i, c in enumerate(C):
@@ -132,3 +132,5 @@ for i, c in enumerate(C):
 
 
 # try: 251092133
+
+# A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J.
