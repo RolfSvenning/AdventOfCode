@@ -83,16 +83,17 @@ lcmCN = lcm(*CNs)
     # break
 
 def f(c1, c2):
-    print("c1, c2: ", c1, c2)
+    print("c1: ", c1)
+    print("c2: ", c2)
     l1, z1 = c1
     l2, z2 = c2
     if l1 > l2: return f(c2, c1)
     # l1 <= l2
-    for k in range(l2 + 1): # range l1?
+    for k in range(l1 + 1): # range l1? or l2
         if (z2 + k * l2) % l1 == z1: break
     print("k: ", k)
     print((z2 + k * l2) % l1)
-    assert k != l2
+    assert k <= l1 + 1
     return (lcm(l1, l2), (z2 + k * l2) % lcm(l1, l2)), (z2 + k * l2)
 
 # print(f((7, 4), (5, 2)))
@@ -109,13 +110,15 @@ def eqToLoop(eq):
     return (eq[0], eq[1][0]) # eq have list of z vals (input only has one)
 
 print("EQ0: ", EQ[0])
+print("EQ1: ", EQ[1])
 curEQ, shift = f(eqToLoop(EQ[0]), eqToLoop(EQ[1]))
+print("curEQ, shift: ", curEQ, shift)
 for nextEQ in EQ[2:]:
-    shiftCycle(eqToLoop(nextEQ), shift)
-    curEQ, shift = f(curEQ, next)
+    nextEQ = shiftCycle(eqToLoop(nextEQ), shift)
+    curEQ, shift = f(curEQ, nextEQ)
 
     print("curEQ: ", curEQ)
-print("curEQ: ", curEQ)
+print("curEQ: ", curEQ, shift)
 
 
 
