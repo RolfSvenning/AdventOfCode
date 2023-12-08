@@ -98,7 +98,7 @@ def f(c1, c2):
 
 # print(f((7, 4), (5, 2)))
 
-def shiftCycle(c, shift):
+def shiftCycle(c, shift): # accomolute shifts I think!!!
     l, z = c
     newPos = shift % l
     d = z - newPos if z >= newPos else l - newPos + z
