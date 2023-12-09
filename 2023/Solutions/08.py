@@ -47,14 +47,16 @@ M = {"L": 0, "R": 1}
 
 #PART TWO: smarter
 S = [k for k in D.keys() if k[-1] == "A"]
-print("S: ", S)
-print(len(S))
+# print("S: ", S)
+# print(len(S))
+
+initSteps = 4
 
 EQ = []
 for s in S:
-    print("---", s)
+    # print("---", s)
     # enter cycle
-    for i in range(5):
+    for i in range(initSteps):
         ins = I[i % n]
         s = D[s][M[ins]]
         i = (i + 1) % n
@@ -71,7 +73,7 @@ for s in S:
     Z = [visited.index(z) for z in visited if z[0][-1] == "Z"]
     # print("Z: ", Z)
     EQ.append((len(visited), Z))
-print(EQ)
+print("EQ: ", EQ)
 
 # assert(all(start == 0 for start,_,_ in EQ))
 
@@ -94,6 +96,7 @@ def f(c1, c2):
     print("k: ", k)
     print((z2 + k * l2) % l1)
     assert k <= l1 + 1
+    assert (z2 + k * l2) == (z2 + k * l2) % lcm(l1, l2) # never walk longer than lcm(l1,l2) I think
     return (lcm(l1, l2), (z2 + k * l2) % lcm(l1, l2)), (z2 + k * l2)
 
 # print(f((7, 4), (5, 2)))
@@ -114,11 +117,13 @@ print("EQ1: ", EQ[1])
 curEQ, shift = f(eqToLoop(EQ[0]), eqToLoop(EQ[1]))
 print("curEQ, shift: ", curEQ, shift)
 for nextEQ in EQ[2:]:
-    nextEQ = shiftCycle(eqToLoop(nextEQ), shift)
+    # nextEQ = shiftCycle(eqToLoop(nextEQ), shift)
+    nextEQ = eqToLoop(nextEQ)
     curEQ, shift = f(curEQ, nextEQ)
 
     print("curEQ: ", curEQ)
 print("curEQ: ", curEQ, shift)
 
+print("PART TWO: ", curEQ[1] + initSteps)
 
-
+# 12030780859465 too low
