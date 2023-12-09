@@ -62,11 +62,7 @@ def jokerType(a):
                 case 2: return 4
                 case 3: return 5
                 case 5: return 6
-                case _: 
-                    # print(a)
-                    # print(aMinusJ)
-                    # print(typeOfCard(aMinusJ)) 
-                    raise NotImplemented
+                case _: raise NotImplemented
         case 2: 
             match typeOfCard(aMinusJ):
                 case 0: return 3
@@ -90,20 +86,11 @@ def jokerType(a):
         case 5: return 6    
         case _: raise NotImplemented
 
-
-
 nums = [(str(i), j) for i, j in zip(range(9, 1, -1), range(9, 1, -1))]
 chars = [("A", 13), ("K", 12), ("Q", 11), ("T", 10)]
 S2 = {k:v for k,v in chars + nums + [("J", 1)]}
 
 def cmp2(a, b):
-    # if "J" in a:
-    #     if "J" not in b:
-    #         return 1
-    # else:
-    #     if "J" in b:
-    #         return -1
-
     at = jokerType(a) if "J" in a else typeOfCard(a)
     bt = jokerType(b) if "J" in b else typeOfCard(b)
     if at == bt: return tie(a, b, S2)
@@ -112,10 +99,7 @@ def cmp2(a, b):
 
 sortedCards2 = sorted(C, key=cmp_to_key(cmp2))
 print("PART TWO")
-# print(sortedCards2)
-# print(tie("32A45", "A2345", S2))
 
-# print(C)
 print([(c, jokerType(c) if "J" in c else typeOfCard(c)) for c in sortedCards2])
 
 print(sum(V[c] * (i + 1) for i, c in enumerate(sortedCards2)))
@@ -130,7 +114,3 @@ for i, c in enumerate(C):
         for i in range(5):
             assert typeOfCard(c) == typeOfCard(c[i:5] + c[0:i])
 
-
-# try: 251092133
-
-# A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J.
