@@ -66,6 +66,7 @@ S = list(zip(SX, SY))
 def solve(expansion):
     res = 0
     for s in S:
+        print(s)
         D = Dijkstra(s, expansion)
         for t in S:
             res += D[t]
@@ -74,56 +75,3 @@ def solve(expansion):
 print("PART ONE: ", solve(2))
 print("PART TWO: ", solve(1000000))
 
-
-
-
-# print(CD)
-# print(N((0,2)))
-
-### <----------------------- PART ONE -----------------------> ###
-# ls = np.array([l.strip() for l in open("2023/Input/11.txt")])
-# A = np.array([[*l] for l in ls])
-
-# def doubleRows(A):
-#     rs = ["".join(r) for r in A.tolist()]
-#     m = A.shape[1]
-#     lsDoubled = list(itertools.chain.from_iterable([[l, l] if l==(m*".") else [l] for l in rs]))
-#     return np.array([[*l] for l in lsDoubled])
-
-# A = doubleRows(A)
-# A = doubleRows(A.T)
-# A = A.T
-# n, m = A.shape
-
-# SX, SY = np.where(A=="#")
-# S = list(zip(SX, SY))
-
-# def BFS(s, fN):
-#     D = np.zeros_like(A, int)
-#     Q = [s]
-#     V = {s}
-#     i = 0
-#     while i < len(Q):
-#         for p2 in fN(p1:=Q[i]):
-#             if p2 in V: continue
-#             Q.append(p2)
-#             V.add(p2)
-#             D[p2] = D[p1] + 1
-#         i = i + 1
-#     return D
-
-# def N(p):
-#     px, py = p
-#     xs = [(x, py) for x in range(px - 1, px + 2, 2) if 0 <= x < n]
-#     ys = [(px, y) for y in range(py - 1, py + 2, 2) if 0 <= y < m]
-#     return xs + ys
-
-# res = 0
-# for i, s in enumerate(S):
-#     D = BFS(s, N)
-#     for t in S:
-#         res += D[t]
-
-# print(res // 2)
-
-# too high 9781156665898
