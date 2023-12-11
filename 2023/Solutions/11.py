@@ -4,7 +4,7 @@ import heapq
 ls = np.array([l.strip() for l in open("2023/Input/11.txt")])
 A = np.array([[*l] for l in ls])
 
-### <----------------------- PART ONE AND TWO -----------------------> ###
+### <----------------------- PART ONE & TWO -----------------------> ###
 def distBetweenRows(A):
     rs = ["".join(r) for r in A.tolist()]
     n, m = len(rs), len(rs[0])
@@ -74,4 +74,4 @@ def solve(expansion):
 
 print("PART ONE: ", solve(2))
 print("PART TWO: ", solve(1000000))
-
+# Using Dijkstra. Much simpler solution: modified Manhattan distance

@@ -66,15 +66,11 @@ n2, m2 = n1 * 3, m1 * 3
 B = np.empty((n2, m2), dtype="str")
 B.fill(".")
 
-# list(zip(*[(1,2),(3,4)]))  --->  [(1, 3), (2, 4)]
-
 def M(i, j): return (3 * i + 1, 3 * j + 1)
 
 for p1 in V:
     p1_B = M(*p1)
     B[M(*p1)] = "o"
-    # print(N(p1_B, A[p1]))
-    # print(tuple(zip(*N(p1_B, A[p1]))))
     for p2 in N(p1_B, A[p1]):
         B[p2] = "x"
 
@@ -89,6 +85,7 @@ for dx, dy in [(-1, -1), (1, 1), (1, -1), (-1, 1)]:
     _, V2 = BFS(s2, N2)
     if (0,0) in V2: continue
     for p in V2:
-        B[p] = "å"
-
-    print("PART TWO: ", sum(1 for i in range(n1) for j in range(m1) if B[M(i, j)] == "å"))
+        B[p] = "I"
+        
+    print("PART TWO: ", sum(1 for i in range(n1) for j in range(m1) if B[M(i, j)] == "I"))
+    break
