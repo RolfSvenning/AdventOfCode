@@ -66,7 +66,6 @@ S = list(zip(SX, SY))
 def solve(expansion):
     res = 0
     for s in S:
-        print(s)
         D = Dijkstra(s, expansion)
         for t in S:
             res += D[t]
