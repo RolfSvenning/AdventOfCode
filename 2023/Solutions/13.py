@@ -3,7 +3,7 @@ import numpy as np
 input = [np.array([[*r] for r in l.split("\n")]) for l in open("2023/input/13.txt").read().split("\n\n")]
 
 ### <----------------------- PART ONE & TWO -----------------------> ###
-def mirror2(h, smudge = 0, skip = -1):
+def mirror(h, smudge = 0, skip = -1):
     n = len(h)
     for i in range(n - 1):
         d = smudge
@@ -18,11 +18,11 @@ def mirror2(h, smudge = 0, skip = -1):
 def f(A, partTwo=False):
     R = [set(np.where(r == ".")[0]) for r in A]
     C = [set(np.where(c == ".")[0]) for c in A.T]
-    ri = mirror2(R)
-    ci = mirror2(C)
+    ri = mirror(R)
+    ci = mirror(C)
     if partTwo: 
-        ri = mirror2(R, 1, ri)
-        ci = mirror2(C, 1, ci)
+        ri = mirror(R, 1, ri)
+        ci = mirror(C, 1, ci)
     return 100 * (ri + 1) if ri != None else ci + 1
 
 print("PART ONE: ", sum(f(A) for A in input))
