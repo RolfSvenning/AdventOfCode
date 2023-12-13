@@ -15,7 +15,7 @@ def mirror(h, smudge = 0, skip = -1):
             if h[i - j] != h[i + j + 1]: break
         else: return i
 
-def f(A, partTwo=False):
+def f(A, partTwo = False):
     R = [set(np.where(r == ".")[0]) for r in A]
     C = [set(np.where(c == ".")[0]) for c in A.T]
     ri = mirror(R)
