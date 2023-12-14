@@ -16,12 +16,12 @@ def partOne(partTwo=False):
         def solve(i, j):
             if i == n:   return j == m
             if j == m:   return all("#" != c for c in s[i:])
-            if (sj:=s[i]) == ".": return solve(i + 1, j)
+            if i + (pj:=p[j]) > n: return 0
+            if (si:=s[i]) == ".":  return solve(i + 1, j)
             else:
-                if i + (pj:=p[j]) > n: return 0
                 if i + pj == n: return "." not in s[i : i + pj] and j + 1 == m
                 putBlock = solve(i + pj + 1, j + 1) if "." not in s[i : i + pj] and s[i + pj] in ".?" else 0
-                return putBlock + (solve(i + 1, j) if sj == "?" else 0)
+                return putBlock + (solve(i + 1, j) if si == "?" else 0)
         res += solve(0, 0)
     return res
 
