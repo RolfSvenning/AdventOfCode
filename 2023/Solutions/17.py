@@ -24,9 +24,8 @@ def Dijkstra(s1, s2, Ns, CONS = 3, REQ = 0):
 
 def makeMove(p, move):
     pos, dir, cons = p
-    x, y = pos
     dx, dy = move
-    return (x + dx, y + dy), move, cons + 1 if dir == move else 1
+    return (pos[0] + dx, pos[1] + dy), move, cons + 1 if dir == move else 1
 
 def N(p, CONS, REQ):
     pos, dir, cons = p
