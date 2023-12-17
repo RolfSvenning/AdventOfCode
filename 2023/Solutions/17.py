@@ -16,11 +16,11 @@ def Dijkstra(s1, s2, Ns, CONS = 3, REQ = 0):
     while Q:
         dist, p = heapq.heappop(Q)
         if p in V: continue
+        if p[0] == (n - 1, m - 1) and p[2] >= REQ: return dist
         V.add(p)
         D[p] = dist
         for q in Ns(p, CONS, REQ):
             heapq.heappush(Q, (dist + A[q[0]], q))
-    return D
 
 def makeMove(p, move):
     pos, dir, cons = p
@@ -42,5 +42,5 @@ def N(p, CONS, REQ):
 
 s1 = (0, 1), (0, 1), 1
 s2 = (1, 0), (1, 0), 1
-print("PART ONE: ", min([v for k, v in Dijkstra(s1, s2, N).items() if k[0] == (n - 1, m - 1)]))
-print("PART TWO: ", min([v for k, v in Dijkstra(s1, s2, N, CONS = 10, REQ = 4).items() if k[0] == (n - 1, m - 1)]))
+print("PART ONE: ", Dijkstra(s1, s2, N))
+print("PART TWO: ", Dijkstra(s1, s2, N, CONS = 10, REQ = 4))
