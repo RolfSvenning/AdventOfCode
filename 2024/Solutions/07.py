@@ -10,7 +10,6 @@ def f(v, nums):
     for i in range(1, len(nums)):
         S = set(s + nums[i] for s in S) | set(s * nums[i] for s in S)
         S = set(s for s in S if s <= v)
-        # print(S)
     return v in S
 
 print("PART ONE: ", sum(v * f(v, nums) for v, nums in I))

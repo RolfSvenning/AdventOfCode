@@ -10,5 +10,4 @@ for b in B:
     D[b] += 1
 
 print("PART TWO: ", sum(a * D[a] for a in A))
-# print("PART TWO: ", [sum(a * D[a] for a in A) for _ in [1] if [(D := DefaultDict(int))] and [0] + [_ for b in B if D.update({b : D[b] + 1})]][0])
 
