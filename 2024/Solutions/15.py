@@ -10,8 +10,8 @@ n, m = len(I), len(I[0])
 
 ### <----------------------- PART ONE -----------------------> ###
 
-def printI(I):
-    print("\n".join("".join(l) for l in I))
+# def printI(I):
+#     print("\n".join("".join(l) for l in I))
 
 def dir(s):
     match s:
@@ -50,7 +50,6 @@ print("PART ONE: ", score(part1(I, Px, Py), "O"))
 
 ### <----------------------- PART TWO -----------------------> ###
 
-
 def wideMap(I):
     return [list("".join([(2 * x if x != "O" else "[]") if x != "@" else "@." for x in l])) for l in I]
 
@@ -65,12 +64,9 @@ def part2(I, Px, Py):
                 Px, Py = Qx, Qy
             case "#": continue
             case   _:
-                assert I[Qx][Qy] in "[]"
-
-                # find inital frontier F
+                # inital frontier F
                 Fs = [[(Px, Py)]]
 
-                # find all dependant boxes
                 for i in range(2 * max(n, m)):
                     # find next frontier
                     F2 = set()
@@ -79,9 +75,11 @@ def part2(I, Px, Py):
                             case ".": continue
                             case "#": break
                             case   _: 
-                                F2 |= set([(Fx + dx, Fy + dy)] if dx == 0 else [(Fx + dx, Fy + dy), (Fx + dx, Fy + dy + (1 if I[Fx + dx][Fy + dy] == "[" else -1))])
+                                F2 |= set([(Fx + dx, Fy + dy)])
+                                if dx != 0:
+                                    F2 |= set([(Fx + dx, Fy + dy + (1 if I[Fx + dx][Fy + dy] == "[" else -1))])
                     else:
-                        # frontier not blocked => move all dependant boxes
+                        # no more frontiers (and not blocked) => shift all frontiers and move the robot
                         if not F2: 
                             for F in reversed(Fs[1:]):
                                 for Fx, Fy in F:
@@ -89,8 +87,11 @@ def part2(I, Px, Py):
                             I[Px][Py], I[Qx][Qy] = I[Qx][Qy], I[Px][Py]
                             Px, Py = Qx, Qy
                             break
+                        
+                        # go to next frontier
                         Fs.append(F2)
                         continue
+
                     break # found border
     return I
 
