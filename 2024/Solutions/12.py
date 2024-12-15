@@ -16,7 +16,6 @@ def BFS(i_, j_):
     Q = [(i_, j_)]
     s = I[i_][j_]
     
-
     while Q:
         i, j = Q.pop()
         if (i, j) in V: continue
@@ -29,7 +28,6 @@ def BFS(i_, j_):
                 P.append((ni, nj))
     return V, P
 
-print(list(map(len, BFS(n - 2, m - 2))))
 
 prices = 0
 visited = set()
@@ -39,7 +37,6 @@ for i in range(1, n - 1):
         V, P = BFS(i, j)
         prices += len(V) * len(P)
         visited |= V
-        # print(I[i][j], list(map(len, BFS(i, j))))
 
 print("PART ONE: ", prices)
 
@@ -71,7 +68,6 @@ def f2(V, P):
                     visited.add((k, j, k, nj))
     return price
 
-V, P = BFS(1, 1)
 
 prices = 0
 visited = set()
@@ -79,7 +75,7 @@ for i in range(1, n - 1):
     for j in range(1, m - 1):
         if (i, j) in visited: continue
         V, P = BFS(i, j)
-        prices += len(V) * f2(V, P)
+        prices += len(V) * f2(V, set(P))
         visited |= V
 
 print("PART TWO: ", prices)
