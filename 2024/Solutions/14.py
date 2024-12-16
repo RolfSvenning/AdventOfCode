@@ -1,6 +1,5 @@
 import re
 from math import ceil
-
 I = [tuple(map(int, re.findall(r"-*\d+", l))) for l in open("2024/Input/14.txt").readlines()]
 
 ### <----------------------- PART ONE -----------------------> ###
@@ -19,9 +18,6 @@ def matrixRobots(robots):
     for c, r, _, _ in robots:
         M[r][c] += 1
     return M
-
-def reduce(xs, acc):
-    return reduce(xs[1:], acc * xs[0]) if xs else acc
 
 S100 = matrixRobots(f2(I, 100))
 res = 1
