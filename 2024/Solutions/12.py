@@ -10,7 +10,7 @@ def Ns(i, j):
     for dx, dy in [(0, 1), (1, 0), (-1, 0), (0, -1)]:
         yield i + dx, j + dy
 
-def BFS(i_, j_):
+def DFS(i_, j_):
     V = set()
     P = []
     Q = [(i_, j_)]
@@ -34,7 +34,7 @@ visited = set()
 for i in range(1, n - 1):
     for j in range(1, m - 1):
         if (i, j) in visited: continue
-        V, P = BFS(i, j)
+        V, P = DFS(i, j)
         prices += len(V) * len(P)
         visited |= V
 
@@ -74,7 +74,7 @@ visited = set()
 for i in range(1, n - 1):
     for j in range(1, m - 1):
         if (i, j) in visited: continue
-        V, P = BFS(i, j)
+        V, P = DFS(i, j)
         prices += len(V) * f2(V, set(P))
         visited |= V
 
